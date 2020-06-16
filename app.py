@@ -1,7 +1,12 @@
-from __future__ import unicode_literals
+"""
+    Line Simple meme bots!
 
-import os
-import random
+    Main Program
+    By fauh45
+    2020
+"""
+
+import sys
 
 from flask import Flask, request, abort
 from linebot import (
@@ -11,66 +16,49 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
-    ImageMessage, VideoMessage, AudioMessage,
-    FollowEvent, ImageSendMessage
+    MessageEvent, TextMessage, TextSendMessage
 )
 
 app = Flask(__name__)
+line_bot_api = LineBotApi(sys.getenv('LINE_ACCESS', ''));
+handler = WebhookHandler(sys.getenv('LINE_SECRET', ''));
 
-channel_secret = os.getenv('LINE_SECRET')
-channel_access_token = os.getenv('LINE_TOKEN')
 
-line_bot_api = LineBotApi(channel_access_token)
-handler = WebhookHandler(channel_secret)
-
-memestorage = os.getenv('MEMES_DATABASE')
-memepreview = os.getenv('MEMES_PREWIEW')
+@app.route("/")
+def home():
+    return 'Yes It is not here,\n go back to your hole\n\nBm\'l vextk axkx. Iextlx vhfx utvd. Ibvd nl ni.'
 
 
 @app.route("/callback", methods=['POST'])
 def callback():
+    # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
 
     # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
 
-    # parse webhook body
+    # handle webhook body
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
+        print("Invalid signature. Please check your channel access token/channel secret.")
         abort(400)
 
     return 'OK'
 
 
 @handler.add(MessageEvent, message=TextMessage)
-def handle_text(event):
-    text = event.message.text
+def text_handler(event):
+    text_content = event.message.text
 
-    number = random.randint(1, 3)
-
-    if text[1] == 'meme':
-        image = memestorage + number + "dankestever.jpeg"
-        text = ""
-        preview = memepreview + number + "dankestever.jpeg"
-    else:
-        text = "Yow type in 'meme', got some dank shit yo"
-
-    line_bot_api.reply_message(
-        event.reply_token, [ImageSendMessage(image, preview), TextSendMessage(text)]
-    )
+    if text_content[:5] == '/memes':
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="Umm, not done yet mate...\n\n"
+                                 "Contact fauh45 for more info")
+        )
 
 
-@handler.add(FollowEvent)
-def handle_follow(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextMessage(text="Hey, it's meme channel, type 'meme', you'll got some dank shit yo")
-    )
-
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+if __name__ == '__main__':
+    app.run()

@@ -1,1 +1,1 @@
-web: python supalty.py
+web: python app.py
