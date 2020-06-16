@@ -6,7 +6,7 @@
     2020
 """
 
-import sys
+import os
 
 from flask import Flask, request, abort
 from linebot import (
@@ -20,8 +20,8 @@ from linebot.models import (
 )
 
 app = Flask(__name__)
-line_bot_api = LineBotApi(sys.getenv('LINE_ACCESS', ''));
-handler = WebhookHandler(sys.getenv('LINE_SECRET', ''));
+line_bot_api = LineBotApi(os.getenv('LINE_ACCESS', ''));
+handler = WebhookHandler(os.getenv('LINE_SECRET', ''));
 
 
 @app.route("/")
