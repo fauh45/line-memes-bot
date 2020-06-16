@@ -53,10 +53,17 @@ def text_handler(event):
     text_content = event.message.text
 
     print("[INFO] Got text %s" % text_content)
-    if text_content[:5] == '/memes':
+    if text_content.split(' ')[0] == '/memes':
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text="Umm, not done yet mate...\n\n"
+                                 "Contact fauh45 for more info")
+        )
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="Not understood,"
+                                 "Umm, not done yet mate...,"
                                  "Contact fauh45 for more info")
         )
 
