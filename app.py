@@ -52,6 +52,7 @@ def callback():
 def text_handler(event):
     text_content = event.message.text
 
+    print("[INFO] Got text %s" % text_content)
     if text_content[:5] == '/memes':
         line_bot_api.reply_message(
             event.reply_token,
