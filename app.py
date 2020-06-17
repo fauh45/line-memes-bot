@@ -98,14 +98,13 @@ def text_handler(event):
             meme_url, original_url = getRandomMemes()
             line_bot_api.reply_message(
                 event.reply_token,
-                ImageSendMessage(
-                    original_content_url=meme_url,
-                    preview_image_url=meme_url
-                )
-            )
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="Source : {}\n\nfauh45".format(original_url))
+                [
+                    ImageSendMessage(
+                        original_content_url=meme_url,
+                        preview_image_url=meme_url
+                    ),
+                    TextSendMessage(text="Source : {}\n\nfauh45".format(original_url))
+                ]
             )
 
     elif isinstance(event.source, SourceGroup):
