@@ -66,7 +66,8 @@ def text_handler(event):
                 line_bot_api.reply_message(
                     event.reply_token,
                     ImageSendMessage(
-                        original_content_url="https://i.kym-cdn.com/entries/icons/original/000/023/608/picklerick.jpg"
+                        original_content_url="https://i.kym-cdn.com/entries/icons/original/000/023/608/picklerick.jpg",
+                        preview_image_url="https://i.kym-cdn.com/entries/icons/original/000/023/608/picklerick.jpg"
                     )
                 )
 
@@ -75,7 +76,8 @@ def text_handler(event):
                 line_bot_api.reply_message(
                     event.reply_token,
                     ImageSendMessage(
-                        original_content_url="https://i.kym-cdn.com/entries/icons/original/000/032/180/cover4.jpg"
+                        original_content_url="https://i.kym-cdn.com/entries/icons/original/000/032/180/cover4.jpg",
+                        preview_image_url="https://i.kym-cdn.com/entries/icons/mobile/000/032/180/cover4.jpg"
                     )
                 )
 
