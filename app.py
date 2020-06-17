@@ -60,7 +60,7 @@ def text_handler(event):
 
     if text_content_list[0] == '/memes':
         text = "Not done yet mate\n"
-        if len(text_content_list > 1):
+        if len(text_content_list) > 1:
             if text_content_list[1] == 'rick':
                 specials = True
                 line_bot_api.reply_message(
