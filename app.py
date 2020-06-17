@@ -8,12 +8,10 @@
 
 import os
 
+import requests
 from flask import Flask, request, abort
 from linebot import (
     LineBotApi, WebhookHandler
-)
-from linebot.models.sources import (
-    SourceUser, SourceGroup
 )
 from linebot.exceptions import (
     InvalidSignatureError
@@ -22,10 +20,25 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
     LocationMessage, FollowEvent, ImageSendMessage
 )
+from linebot.models.sources import (
+    SourceUser, SourceGroup
+)
 
 app = Flask(__name__)
 line_bot_api = LineBotApi(os.getenv('LINE_ACCESS', ''));
 handler = WebhookHandler(os.getenv('LINE_SECRET', ''));
+
+
+def getRandomMemes():
+    api_url = 'https://meme-api.herokuapp.com/gimme'
+    req = requests.get(api_url)
+
+    if req.status_code == 200:
+        raw_json = req.json()
+
+        return raw_json['url'], raw_json['postLink']
+
+    return None
 
 
 @app.route("/")
@@ -82,10 +95,17 @@ def text_handler(event):
                 )
 
         if not specials:
+            meme_url, original_url = getRandomMemes()
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text="Umm, not done yet mate...\n\n"
-                                     "Contact fauh45 for more info")
+                ImageSendMessage(
+                    original_content_url=meme_url,
+                    preview_image_url=meme_url
+                )
+            )
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text="Source : {}\n\nfauh45".format(original_url))
             )
 
     elif isinstance(event.source, SourceGroup):
