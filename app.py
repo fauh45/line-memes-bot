@@ -110,6 +110,22 @@ def text_handler(event):
                     ]
                 )
 
+            elif text_content_list[1] == 'dark':
+                specials = True
+                meme_url, original_url = getRandomMemes("darkmeme")
+
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    [
+                        ImageSendMessage(
+                            original_content_url=meme_url,
+                            preview_image_url=meme_url
+                        ),
+                        TextSendMessage(text="Just like coffee, sometimes meme are better dark."
+                                             "\nSource : {}\n\nfauh45".format(original_url))
+                    ]
+                )
+
         if not specials:
             meme_url, original_url = getRandomMemes()
 
